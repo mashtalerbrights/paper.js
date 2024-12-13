@@ -9,7 +9,7 @@
  *
  * All rights reserved.
  *
- * Date: Wed Jul 17 15:02:46 2024 +0200
+ * Date: Fri Dec 13 12:49:32 2024 +0200
  *
  ***
  *
@@ -9411,7 +9411,6 @@ new function() {
 			if (miniSize > 0 && !(selection & 1)) {
 				var fillStyle = ctx.fillStyle;
 				ctx.fillStyle = '#ffffff';
-				ctx.fillRect(pX - miniHalf, pY - miniHalf, miniSize, miniSize);
 				ctx.beginPath();
 				ctx.arc(pX, pY, miniSize / 2, 0, Math.PI * 2);
 				ctx.fill();
