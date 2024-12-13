@@ -2212,13 +2212,22 @@ new function() { // Scope for drawing
             if (selection & /*#=*/SegmentSelection.HANDLE_OUT)
                 drawHandle(4);
             // Draw a rectangle at segment.point:
-            ctx.fillRect(pX - half, pY - half, size, size);
+            // ctx.fillRect(pX - half, pY - half, size, size);
+            // Draw a circle at segment.point:
+            ctx.beginPath();
+            ctx.arc(pX, pY, size / 2, 0, Math.PI * 2);
+            ctx.fill();
             // If the point is not selected, draw a white square that is 1px
             // smaller on all sides, but only draw it if size is big enough.
             if (miniSize > 0 && !(selection & /*#=*/SegmentSelection.POINT)) {
                 var fillStyle = ctx.fillStyle;
                 ctx.fillStyle = '#ffffff';
+                // Draw a rectangle at segment.point:
                 ctx.fillRect(pX - miniHalf, pY - miniHalf, miniSize, miniSize);
+                // Draw a circle at segment.point:
+                ctx.beginPath();
+                ctx.arc(pX, pY, miniSize / 2, 0, Math.PI * 2);
+                ctx.fill();
                 ctx.fillStyle = fillStyle;
             }
         }
