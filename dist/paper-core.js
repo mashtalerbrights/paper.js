@@ -9,7 +9,7 @@
  *
  * All rights reserved.
  *
- * Date: Fri Dec 13 12:49:56 2024 +0200
+ * Date: Sun Dec 15 22:45:27 2024 +0200
  *
  ***
  *
@@ -9402,20 +9402,26 @@ new function() {
 				drawHandle(2);
 			if (selection & 4)
 				drawHandle(4);
+			ctx.shadowColor = 'black';
+			ctx.shadowBlur = 2;
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = 0;
 			ctx.beginPath();
 			ctx.arc(pX, pY, size / 2, 0, Math.PI * 2);
 			ctx.fill();
 			if (miniSize > 0 && !(selection & 1)) {
 				var fillStyle = ctx.fillStyle;
-				var shadowColor = ctx.shadowColor;
 				ctx.fillStyle = '#ffffff';
-				ctx.shadowColor = '#000000';
+
 				ctx.beginPath();
 				ctx.arc(pX, pY, miniSize / 2, 0, Math.PI * 2);
 				ctx.fill();
 				ctx.fillStyle = fillStyle;
-				ctx.fillStyle = shadowColor;
 			}
+			ctx.shadowColor = 'transparent';
+			ctx.shadowBlur = 0;
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = 0;
 		}
 	}
 
