@@ -2221,7 +2221,9 @@ new function() { // Scope for drawing
             // smaller on all sides, but only draw it if size is big enough.
             if (miniSize > 0 && !(selection & /*#=*/SegmentSelection.POINT)) {
                 var fillStyle = ctx.fillStyle;
-                ctx.fillStyle = '#ffffff';
+				var shadowColor = ctx.shadowColor;
+				ctx.fillStyle = '#ffffff';
+				ctx.shadowColor = '#000000';
                 // Draw a rectangle at segment.point:
                 // ctx.fillRect(pX - miniHalf, pY - miniHalf, miniSize, miniSize);
                 // Draw a circle at segment.point:
@@ -2229,6 +2231,7 @@ new function() { // Scope for drawing
                 ctx.arc(pX, pY, miniSize / 2, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.fillStyle = fillStyle;
+                ctx.fillStyle = shadowColor;
             }
         }
     }
