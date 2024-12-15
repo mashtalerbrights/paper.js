@@ -9,7 +9,7 @@
  *
  * All rights reserved.
  *
- * Date: Fri Dec 13 12:49:32 2024 +0200
+ * Date: Fri Dec 13 12:49:56 2024 +0200
  *
  ***
  *
@@ -4815,7 +4815,7 @@ new function() {
 				mx = matrix.appended(this.getGlobalMatrix(true)),
 				half = size / 2;
 			ctx.strokeStyle = ctx.fillStyle = color
-					? color.toCanvasStyle(ctx) : '#009dec';
+					? color.toCanvasStyle(ctx) : 'rgba(255, 0, 0, 0)';
 			if (itemSelected)
 				this._drawSelected(ctx, mx, selectionItems);
 			if (positionSelected) {
@@ -9407,11 +9407,14 @@ new function() {
 			ctx.fill();
 			if (miniSize > 0 && !(selection & 1)) {
 				var fillStyle = ctx.fillStyle;
+				var shadowColor = ctx.shadowColor;
 				ctx.fillStyle = '#ffffff';
+				ctx.shadowColor = '#000000';
 				ctx.beginPath();
 				ctx.arc(pX, pY, miniSize / 2, 0, Math.PI * 2);
 				ctx.fill();
 				ctx.fillStyle = fillStyle;
+				ctx.fillStyle = shadowColor;
 			}
 		}
 	}
