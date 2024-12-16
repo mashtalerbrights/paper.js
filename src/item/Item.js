@@ -4576,7 +4576,7 @@ new function() { // Injection scope for hit-test functions shared with project
                 mx = matrix.appended(this.getGlobalMatrix(true)),
                 half = size / 2;
             ctx.strokeStyle = ctx.fillStyle = color
-                    ? color.toCanvasStyle(ctx) : '#009dec';
+                    ? color.toCanvasStyle(ctx) : 'rgba(255, 0, 0, 0)'; // #009dec
             if (itemSelected)
                 this._drawSelected(ctx, mx, selectionItems);
             if (positionSelected) {
