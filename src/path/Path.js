@@ -2212,15 +2212,37 @@ new function() { // Scope for drawing
             if (selection & /*#=*/SegmentSelection.HANDLE_OUT)
                 drawHandle(4);
             // Draw a rectangle at segment.point:
-            ctx.fillRect(pX - half, pY - half, size, size);
+            // ctx.fillRect(pX - half, pY - half, size, size);
+            // Draw a circle at segment.point:
+            ctx.shadowColor = 'black';
+			ctx.shadowBlur = 2;          
+			ctx.shadowOffsetX = 0;  
+			ctx.shadowOffsetY = 0;
+            ctx.beginPath();
+            ctx.arc(pX, pY, size / 2, 0, Math.PI * 2);
+            ctx.fill();
             // If the point is not selected, draw a white square that is 1px
             // smaller on all sides, but only draw it if size is big enough.
             if (miniSize > 0 && !(selection & /*#=*/SegmentSelection.POINT)) {
                 var fillStyle = ctx.fillStyle;
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(pX - miniHalf, pY - miniHalf, miniSize, miniSize);
+				// var shadowColor = ctx.shadowColor;
+				ctx.fillStyle = '#ffffff';
+				// ctx.shadowColor = '#000000';
+
+                // Draw a rectangle at segment.point:
+                // ctx.fillRect(pX - miniHalf, pY - miniHalf, miniSize, miniSize);
+
+                // Draw a circle at segment.point:
+                ctx.beginPath();
+                ctx.arc(pX, pY, miniSize / 2, 0, Math.PI * 2);
+                ctx.fill();
                 ctx.fillStyle = fillStyle;
+                // ctx.fillStyle = shadowColor;
             }
+            ctx.shadowColor = 'transparent';
+			ctx.shadowBlur = 0;
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = 0;
         }
     }
 
