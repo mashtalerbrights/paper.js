@@ -862,40 +862,49 @@ var Project = PaperScopeItem.extend(/** @lends Project# */{
         }
     },
 
-    draw: function(ctx, matrix, pixelRatio) {
-        // Increase the _updateVersion before the draw-loop. After that, items
-        // that are visible will have their _updateVersion set to the new value.
-        this._updateVersion++;
-        ctx.save();
-        matrix.applyToContext(ctx);
-        // Use new Base() so we can use param.extend() to easily override values
-        var children = this._children,
-            param = new Base({
-                offset: new Point(0, 0),
-                pixelRatio: pixelRatio,
-                viewMatrix: matrix.isIdentity() ? null : matrix,
-                matrices: [new Matrix()], // Start with the identity matrix.
-                // Tell the drawing routine that we want to keep _globalMatrix
-                // up to date. Item#rasterize() and Raster#getAverageColor()
-                // should not set this.
-                updateMatrix: true
-            });
-        for (var i = 0, l = children.length; i < l; i++) {
-            children[i].draw(ctx, param);
-        }
-        ctx.restore();
-
-        // Draw the selection of the selected items in the project:
-        if (this._selectionCount > 0) {
-            ctx.save();
-            ctx.strokeWidth = 1;
-            var items = this._selectionItems,
-                size = this._scope.settings.handleSize,
-                version = this._updateVersion;
-            for (var id in items) {
-                items[id]._drawSelection(ctx, matrix, size, items, version);
-            }
-            ctx.restore();
-        }
-    }
+	draw: function(ctx, matrix, pixelRatio) {
+		this._updateVersion++;
+		ctx.save();
+		matrix.applyToContext(ctx);
+		var children = this._children,
+			param = new Base({
+				offset: new Point(0, 0),
+				pixelRatio: pixelRatio,
+				viewMatrix: matrix.isIdentity() ? null : matrix,
+				matrices: [new Matrix()],
+				updateMatrix: true
+			});		
+		// First pass: draw children without drawAfterSelection
+		for (var i = 0, l = children.length; i < l; i++) {
+			if (!children[i].drawAfterSelection) {
+				children[i].draw(ctx, param);
+			}
+		}
+		ctx.restore();
+	
+		// Draw selection if needed
+		if (this._selectionCount > 0) {
+			ctx.save();
+			ctx.strokeWidth = 1;
+			var items = this._selectionItems,
+				size = this._scope.settings.handleSize,
+				version = this._updateVersion;
+			for (var id in items) {
+				items[id]._drawSelection(ctx, matrix, size, items, version);
+			}
+			ctx.restore();
+		}
+	
+		// Second pass: draw children with drawAfterSelection
+		if (children.length) {
+			ctx.save();
+			matrix.applyToContext(ctx);
+			for (var i = 0, l = children.length; i < l; i++) {
+				if (children[i].drawAfterSelection) {
+					children[i].draw(ctx, param);
+				}
+			}
+			ctx.restore();
+		}
+	}
 });
