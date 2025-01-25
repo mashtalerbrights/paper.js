@@ -1,5 +1,5 @@
 /*!
- * Paper.js v0.12.18-feature-segment-circle - The Swiss Army Knife of Vector Graphics Scripting.
+ * Paper.js v0.12.18-layers_forward_selection - The Swiss Army Knife of Vector Graphics Scripting.
  * http://paperjs.org/
  *
  * Copyright (c) 2011 - 2020, Jürg Lehni & Jonathan Puckey
@@ -9,7 +9,7 @@
  *
  * All rights reserved.
  *
- * Date: Sun Dec 15 22:45:27 2024 +0200
+ * Date: Sun Dec 15 23:30:50 2024 +0200
  *
  ***
  *
@@ -821,7 +821,7 @@ var PaperScope = Base.extend({
 		}
 	},
 
-	version: "0.12.18-feature-segment-circle",
+	version: "0.12.18-layers_forward_selection",
 
 	getView: function() {
 		var project = this.project;
@@ -3109,10 +3109,11 @@ var Project = PaperScopeItem.extend({
 				updateMatrix: true
 			});
 		for (var i = 0, l = children.length; i < l; i++) {
-			children[i].draw(ctx, param);
+			if (!children[i].drawAfterSelection) {
+				children[i].draw(ctx, param);
+			}
 		}
 		ctx.restore();
-
 		if (this._selectionCount > 0) {
 			ctx.save();
 			ctx.strokeWidth = 1;
@@ -3121,6 +3122,16 @@ var Project = PaperScopeItem.extend({
 				version = this._updateVersion;
 			for (var id in items) {
 				items[id]._drawSelection(ctx, matrix, size, items, version);
+			}
+			ctx.restore();
+		}
+		if (children.length) {
+			ctx.save();
+			matrix.applyToContext(ctx);
+			for (var i = 0, l = children.length; i < l; i++) {
+				if (children[i].drawAfterSelection) {
+					children[i].draw(ctx, param);
+				}
 			}
 			ctx.restore();
 		}
@@ -5000,6 +5011,7 @@ var Group = Item.extend({
 
 var Layer = Group.extend({
 	_class: 'Layer',
+	_drawAfterSelection: false,
 
 	initialize: function Layer() {
 		Group.apply(this, arguments);
