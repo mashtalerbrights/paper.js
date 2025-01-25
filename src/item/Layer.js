@@ -24,6 +24,7 @@
  */
 var Layer = Group.extend(/** @lends Layer# */{
     _class: 'Layer',
+    _drawAfterSelection: false,
     // Turn on again for now, since examples depend on it.
     // TODO: Discus with @puckey and come to a conclusion
     // _selectChildren: false,
